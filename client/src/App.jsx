@@ -41,7 +41,7 @@ function App() {
                     <Route path= "/monthly" element={<Monthly/>}/>
                     <Route path= "/breakdown" element={<Breakdown/>}/>
                       <Route path= "/admin" element={<Admin/>}/>
-                       <Route path= "/performance" element={<Performance/>}/>
+                      
              </Route>
            </Routes>
        </ThemeProvider>

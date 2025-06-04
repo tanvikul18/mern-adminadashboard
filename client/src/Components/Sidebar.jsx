@@ -62,10 +62,7 @@ const navItems = [
         text:  "Admin",
         icon: <AdminPanelSettingsOutlined/>
     },
-      {
-        text:  "Performance",
-        icon: <TrendingUpOutlined/>
-    },
+     
 ]
 export default function Sidebar({isNoMobile,drawerWidth,isSideBarOpen,setSideBarOpen,user}) {
     const {pathname} = useLocation();
