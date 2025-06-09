@@ -5,10 +5,20 @@ import {createApi ,fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 export const api = createApi({
     baseQuery : fetchBaseQuery({baseUrl : import.meta.env.VITE_REACT_BASE_URL}),
     reducerPath : "adminApi",
-    tagTypes : ['User','Products','Customers','Transactions','Geography','Sales','Admins','Performance','Dashboard'],
+    tagTypes : ['LoggedUser','User','Products','Customers','Transactions','Geography','Sales','Admins','Performance','Dashboard'],
     endpoints : (builder)=>({
+         getLoggedInUser: builder.mutation({
+        query: ({ name, password }) => ({
+            url: 'auth/signin',
+            method: 'POST',
+            body: { name, password },
+        }),
+        providesTags: ['LoggedUser'],
+        }),
         getUser: builder.query({
+           
             query : (id) =>`general/user/${id}`,
+            
             providesTags : ['User']
         }),
         getProducts: builder.query({
@@ -52,5 +62,5 @@ export const api = createApi({
 
 export const {
     useGetUserQuery,useGetProductsQuery,useGetCustomersQuery,useGetTransactionsQuery,useGetGeographyQuery,useGetSalesQuery,useGetAdminQuery,
-    useGetPerformanceQuery,useGetDashboardStatsQuery
+    useGetPerformanceQuery,useGetDashboardStatsQuery,useGetLoggedInUserMutation
 } = api;

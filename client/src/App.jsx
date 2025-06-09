@@ -16,9 +16,12 @@ import Monthly from "./scenes/monthly/Monthly.jsx";
 import Breakdown from "./scenes/breakdown/Breakdown.jsx"
 import Admin from "./scenes/admin/Admin.jsx";
 import Performance from "./scenes/performance/Performance.jsx";
+import Login from "./scenes/login/Login.jsx";
+import ProtectedRoute from "./Protected.jsx";
 function App() {
  const mode = useSelector((state)=>state.global.mode);
- 
+ const uRole = useSelector((state)=>state.global.userRole);
+ console.log("u role from app",uRole)
  const theme =useMemo(()=>{
    return createTheme(themeSettings(mode),[mode])
  });
@@ -29,20 +32,36 @@ function App() {
        <ThemeProvider theme={theme}>
            <CssBaseline/>
            <Routes>
-             <Route element={<Layout/>}>
-                <Route path= "/" element={<Navigate to="/dashboard" replace/>}/>
-                  <Route path= "/dashboard" element={<Dashboard/>}/>
-                   <Route path= "/products" element={<Product/>}/>
-                   <Route path= "/customers" element={<Customer/>}/>
-                   <Route path= "/transactions" element={<Transaction/>}/>
-                   <Route path= "/geography" element={<Geography/>}/>
-                    <Route path= "/overview" element={<Overview/>}/>
-                    <Route path= "/daily" element={<Daily/>}/>
-                    <Route path= "/monthly" element={<Monthly/>}/>
-                    <Route path= "/breakdown" element={<Breakdown/>}/>
-                      <Route path= "/admin" element={<Admin/>}/>
-                      
-             </Route>
+             <Route path="/login"  element={<Login/>}/>
+             {/* Protected Routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<Layout />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/products" element={<Product />} />
+                    <Route path="/transactions" element={<Transaction />} />
+                    <Route path="/geography" element={<Geography />} />
+                    <Route path="/overview" element={<Overview />} />
+                   
+
+                    {/* Admin-only Routes */}
+                    {uRole === "admin" && (
+                      <>
+                        <Route path="/customers" element={<Customer />} />
+                        <Route path="/monthly" element={<Monthly />} />
+                        <Route path="/admin" element={<Admin />} />
+                      </>
+                    )}
+                      {/* User-only Routes */}
+                    {uRole === "user" && (
+                      <>
+                         <Route path="/daily" element={<Daily />} />
+                         <Route path="/breakdown" element={<Breakdown />} />
+                      </>
+                    )}
+                  </Route>
+                </Route>
+                            {/* Redirect everything else */}
+                <Route path="*" element={<Navigate to="/login" replace />} />
            </Routes>
        </ThemeProvider>
        </BrowserRouter>

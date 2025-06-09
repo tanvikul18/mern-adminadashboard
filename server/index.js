@@ -7,6 +7,7 @@ import express from 'express';
   import morgan from 'morgan';
 
   /* Import Routes */
+   import authRoutes from "./routes/auth.js"
  import clientRoutes from "./routes/client.js"
  import generalRoutes from "./routes/general.js"
  import managementRoutes from "./routes/management.js"
@@ -35,6 +36,7 @@ import AffliateStatModel from './models/AffliateStat.js';
   app.use(cors());
 
   /* ROUTES */
+  app.use("/auth",authRoutes);
 app.use("/client",clientRoutes);
 app.use("/general",generalRoutes)
 app.use("/management",managementRoutes)

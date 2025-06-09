@@ -9,22 +9,26 @@ import { usseState } from 'react';
 import { useEffect } from 'react';
 import FlexBetween from './FlexBetween';
 import profileImage from "../assets/profile.jfif"
+import { useSelector } from 'react-redux'
 const navItems = [
     {
         text:  "Dashboard",
-        icon: <HomeOutlined/>
-    },
+        icon: <HomeOutlined/>,
+       
+    }, 
     {
         text:  "Client Facing",
         icon: null
     },
     {
         text:  "Products",
-        icon: <ShoppingCartOutlined/>
+        icon: <ShoppingCartOutlined/>,
+        
     },
       {
         text:  "Customers",
-        icon: <Groups2Outlined/>
+        icon: <Groups2Outlined/>,
+         roles: ["admin"]
     },
       {
         text:  "Transactions",
@@ -44,7 +48,8 @@ const navItems = [
     },
       {
         text:  "Daily",
-        icon: <TodayOutlined/>
+        icon: <TodayOutlined/>,
+         roles: ["user"]
     },
       {
         text:  "Monthly",
@@ -52,7 +57,8 @@ const navItems = [
     },
       {
         text:  "Breakdown",
-        icon: <PieChartOutlined/>
+        icon: <PieChartOutlined/>,
+         roles: ["user"]
     },
       {
         text:  "Managament",
@@ -60,13 +66,16 @@ const navItems = [
     },
       {
         text:  "Admin",
-        icon: <AdminPanelSettingsOutlined/>
+        icon: <AdminPanelSettingsOutlined/>,
+         roles: ["admin"]
     },
      
 ]
 export default function Sidebar({isNoMobile,drawerWidth,isSideBarOpen,setSideBarOpen,user}) {
     const {pathname} = useLocation();
     const[active,setActive] = useState('');
+    const uRole = useSelector((state)=>state.global.userRole);
+    console.log("userrole",uRole)
     const navigate= useNavigate();
     const theme= useTheme();
 
@@ -91,7 +100,7 @@ export default function Sidebar({isNoMobile,drawerWidth,isSideBarOpen,setSideBar
                              <FlexBetween color={theme.palette.secondary.main}>
                                  <Box display={"flex"} alignItems={"center"} gap={"0.5rem"}>
                                      <Typography variant='h4' fontWeight={"bold"}>
-                                         ECOM VISION
+                                        Admin Dash
                                      </Typography>
                                  </Box>
                                  {!isNoMobile && (
@@ -103,8 +112,9 @@ export default function Sidebar({isNoMobile,drawerWidth,isSideBarOpen,setSideBar
                       </Box>
                       <List>
                         {
-                              navItems.length > 0 && navItems.map(({text,icon})=>
+                              navItems.length > 0 && navItems.map(({text,icon,roles})=>
                                {
+                                 if (roles && !roles.includes(uRole)) return null;
                                        if(!icon){
                                          return (
                                             <Typography key={text} sx={{m:"2.25rem 0 1rem 3rem"}}>

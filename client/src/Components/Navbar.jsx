@@ -6,16 +6,23 @@ import { setMode } from '../state'
 import profileImage from "../assets/profile.jfif"
 import { useState } from 'react'
 import { AppBar, Button, IconButton,Menu, InputBase, Toolbar, useTheme,MenuItem,Box,Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 export default function Navbar(props) {
     const dispatch = useDispatch();
     const theme = useTheme();
+    const navigate = useNavigate();
     const [anchorEl,setanchorEl] = useState(null);
     const isOpen = Boolean(anchorEl);
     const handleClick = (e)=>{
         setanchorEl(e.currentTarget)
     }
      const handleClose = (e)=>{
-        setanchorEl(null)
+        setanchorEl(null);
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("user")
+        navigate("/login");
+
+        
     }
   return <AppBar sx={{
       position : "static",
